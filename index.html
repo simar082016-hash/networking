@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,6 +39,11 @@
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
   </style>
 
+  <!-- Defensive Shim for process.env -->
+  <script type="text/javascript">
+    window.process = window.process || { env: {} };
+  </script>
+
   <script type="importmap">
   {
     "imports": {
@@ -49,7 +55,7 @@
   }
   </script>
 
-  <!-- SPA Redirect Logic for GitHub Pages -->
+  <!-- SPA Redirect Logic: Automatically handles base paths -->
   <script type="text/javascript">
     (function(l) {
       if (l.search[1] === '/' ) {
@@ -57,17 +63,15 @@
           return s.replace(/~and~/g, '&') 
         }).join('?');
         window.history.replaceState(null, null,
-            l.pathname.slice(0, -1) + decoded + l.hash
+            l.pathname.replace(/\/$/, '') + decoded + l.hash
         );
       }
     }(window.location))
   </script>
-<link rel="stylesheet" href="/index.css">
 </head>
 <body class="bg-slate-50 text-slate-900">
   <div id="root"></div>
   <!-- Entry Point -->
   <script type="module" src="./index.tsx"></script>
-<script type="module" src="/index.tsx"></script>
 </body>
 </html>
